@@ -1,0 +1,152 @@
+{
+  "type": "step",
+  "id": "369080de-eb84-4c54-874f-59caf9b409b5",
+  "name": "validate-flow-steps-exist",
+  "category": "template",
+  "metadata": {
+    "title": "Validate Flow Steps Exist",
+    "purposeAndUsage": "Validation report of existing vs. missing flow-steps",
+    "lastUpdated": "2026-06-15"
+  },
+  "output": {
+    "description": "Validation report of existing vs. missing flow-steps",
+    "artifacts": [
+      "validation-report"
+    ],
+    "memoryUpdates": [
+      "validationResults",
+      "missingStepsList"
+    ]
+  },
+  "guidance": {
+    "prerequisites": [
+      "Template file to validate exists",
+      "Template contains stepRef references in its steps array"
+    ],
+    "specificActions": [
+      "Follow the substeps below in sequence",
+      "Workflow: read template -> extract stepRef UUIDs -> scan for matching id fields -> create report -> handle missing",
+      "Each stepRef is a UUID that must match the id field of a step definition JSON file in a subdirectory of the template directory",
+      "Framework steps are identified by type: framework-step in their JSON and are resolved from ~/.claude/zeremai/framework-steps/ by scanning for matching id field",
+      "If missing steps found: report them and STOP -- user must create the step definition with a matching id field"
+    ],
+    "files": {
+      "read": [
+        "Template JSON file to validate",
+        "Step definition JSON files in template subdirectories (scan for matching id field)"
+      ],
+      "create": [],
+      "update": []
+    },
+    "tools": [
+      "read_file - Read template and check step files",
+      "list_dir - Verify step subdirectories exist within template directory"
+    ],
+    "bestPractices": [
+      "Extract all stepRef UUID values from the template steps array",
+      "For each stepRef UUID, scan template subdirectories for a step definition JSON file whose id field matches the UUID",
+      "Also scan ~/.claude/zeremai/framework-steps/ for framework step definitions with matching id field",
+      "No prefix handling needed -- all stepRefs are plain UUIDs; framework steps are identified by their type: framework-step field",
+      "Document all missing steps with their UUID and the stepRefName companion field (if available) for readability",
+      "Provide clear report of validation results"
+    ]
+  },
+  "substeps": [
+    {
+      "number": 1,
+      "name": "Read template file",
+      "description": "Load the template content for analysis",
+      "actions": [
+        "Read the template JSON file",
+        "Document template being validated",
+        "Identify the template directory path"
+      ]
+    },
+    {
+      "number": 2,
+      "name": "Extract step references",
+      "description": "Find all stepRef UUID values in the template steps array",
+      "actions": [
+        "Parse the steps array from the template JSON",
+        "For each step, extract the stepRef UUID value (skip null stepRefs for orchestrator steps)",
+        "Note the stepRefName companion field for each step (human-readable display name)",
+        "Create list of all referenced step UUIDs"
+      ]
+    },
+    {
+      "number": 3,
+      "name": "Check step existence",
+      "description": "Verify each referenced step UUID resolves to an existing step definition",
+      "actions": [
+        "Build a UUID-to-path registry by scanning all subdirectories of {template-dir} for step definition JSON files with id fields",
+        "Also scan ~/.claude/zeremai/framework-steps/ subdirectories for framework step definitions with id fields",
+        "For each stepRef UUID: look up in the registry -- mark as valid if found, missing if not found",
+        "No name-based fallback -- UUID must resolve or it is marked as missing"
+      ]
+    },
+    {
+      "number": 4,
+      "name": "Create validation report",
+      "description": "Document validation results",
+      "actions": [
+        "List all valid step references",
+        "List all missing step references",
+        "Calculate validation summary (X of Y valid)"
+      ]
+    },
+    {
+      "number": 5,
+      "name": "List missing steps",
+      "description": "Document missing steps with their UUIDs",
+      "actions": [
+        "For each missing step UUID, document the UUID and the stepRefName (if available) for readability",
+        "Check if the step definition exists but has a different id -- this indicates a UUID mismatch",
+        "Instruct user to either create a step definition with the expected id or update the template's stepRef to the correct UUID"
+      ]
+    },
+    {
+      "number": 6,
+      "name": "Handle missing steps",
+      "description": "Report missing steps and stop if any are found",
+      "actions": [
+        "If missing steps found: report the list and STOP -- user must create step subdirectories within the template",
+        "If all steps valid: proceed to next step",
+        "Document validation result in memory"
+      ]
+    },
+    {
+      "number": 7,
+      "name": "End-Step: Log Problems",
+      "description": "Log what went wrong in this step",
+      "actions": [
+        "Log problems: If any problems, errors, workarounds, or unexpected situations were encountered during this step, log them via add-log-entry --problems '[\"description of problem 1\", ...]'. This feeds the continuous-improvement step's analysis."
+      ]
+    }
+  ],
+  "flow": {
+    "description": "Linear flow: read template -> extract stepRef values -> check existence -> create report -> list missing -> handle missing"
+  },
+  "memoryFileUsage": {
+    "readFrom": [
+      "context.json",
+      "changes-applied.json"
+    ],
+    "writeTo": [
+      "findings.json"
+    ],
+    "fields": [
+      "Information Produced: Validation results, missing steps list",
+      "Decisions Made: How to handle missing steps"
+    ]
+  },
+  "parameters": {
+    "required": [],
+    "optional": [],
+    "defaults": {}
+  },
+  "referenceFormat": {
+    "resolution": "UUID-only lookup -- scan step definition JSON files for matching id field",
+    "templateSteps": "Scan {template-dir} subdirectories for {subfolder}/{subfolder}.json files with matching id",
+    "frameworkSteps": "Scan ~/.claude/zeremai/framework-steps/ subdirectories for step definitions with matching id"
+  }
+}

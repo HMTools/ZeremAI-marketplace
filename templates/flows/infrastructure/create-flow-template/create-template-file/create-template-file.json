@@ -1,0 +1,158 @@
+{
+  "type": "step",
+  "id": "48b3a870-31ca-450d-856e-796b23997776",
+  "name": "create-template-file",
+  "category": "template",
+  "metadata": {
+    "title": "Create Template File",
+    "purposeAndUsage": "Complete template file with all sections",
+    "lastUpdated": "2026-05-28"
+  },
+  "output": {
+    "description": "Complete template file with all sections",
+    "artifacts": [
+      "~/.claude/zeremai/templates/flows/{category}/{template-name}.md",
+      "~/.claude/zeremai/templates/flows/{category}/{template-name}.json"
+    ],
+    "memoryUpdates": [
+      "templateFilePath",
+      "jsonFilePath",
+      "validationResults"
+    ]
+  },
+  "guidance": {
+    "prerequisites": [
+      "Template design completed (purpose, parameters, steps, flow diagram)",
+      "All referenced steps exist or are identified for creation"
+    ],
+    "userGuidelines": [
+      "~/.claude/zeremai/guidelines/docs/how-to-document-flows.md"
+    ],
+    "specificActions": [
+      "Follow the substeps below in sequence",
+      "Workflow: create file → write user docs → write flow → write steps → create JSON → validate",
+      "Use kebab-case for filename: `~/.claude/zeremai/templates/flows/{category}/{template-name}.md`",
+      "MD file contains: Description, Purpose & Usage, Quick Reference, Flow diagram, Steps list",
+      "JSON file contains: metadata, parameters, steps with full context, guidance",
+      "Each step's stepRef is the UUID from the step definition's id field, with stepRefName as human-readable companion",
+      "CRITICAL: Only create template files in this step. Do NOT create step files — missing steps are handled later by validate-flow-steps-exist via sub-flows"
+    ],
+    "files": {
+      "read": [
+        "memory.json (template design from previous step)",
+        "~/.claude/zeremai/templates/flows/template-template.md (if exists)"
+      ],
+      "create": [
+        "~/.claude/zeremai/templates/flows/{category}/{template-name}.md",
+        "~/.claude/zeremai/templates/flows/{category}/{template-name}.json"
+      ],
+      "update": []
+    },
+    "tools": [
+      "write - Create template MD and JSON files",
+      "read_file - Read template design from memory",
+      "list_dir - Verify directory structure"
+    ],
+    "bestPractices": [
+      "Always include continuous improvement as final step with approvalRequired: true",
+      "Use UUID-based references for all step and template cross-references",
+      "Keep parameters section clear with required vs optional",
+      "Ensure flow diagram matches step sequence",
+      "Include memory file configuration",
+      "This step creates FLOW TEMPLATE files only (~/.claude/zeremai/templates/flows/). Step definitions are created as subdirectories within the template directory."
+    ],
+    "warnings": []
+  },
+  "substeps": [
+    {
+      "number": 1,
+      "name": "Create template file",
+      "description": "Create the MD file in the templates directory",
+      "actions": [
+        "Create category directory if needed",
+        "Create file: ~/.claude/zeremai/templates/flows/{category}/{template-name}.md"
+      ]
+    },
+    {
+      "number": 2,
+      "name": "Write user documentation sections",
+      "description": "Write the user-facing documentation",
+      "actions": [
+        "Write header comment with template name and purpose",
+        "Write Description section",
+        "Write Purpose & Usage section",
+        "Write Quick Reference table with parameters"
+      ]
+    },
+    {
+      "number": 3,
+      "name": "Write flow diagram",
+      "description": "Add mermaid flowchart showing flow flow",
+      "actions": [
+        "Write Flow Flow section",
+        "Create mermaid flowchart matching planned steps",
+        "Include decision points and branches"
+      ]
+    },
+    {
+      "number": 4,
+      "name": "Write step definitions",
+      "description": "Document all steps with their references",
+      "actions": [
+        "Write Steps section",
+        "For each step: checkbox, description, step reference UUID",
+        "Use format: - [ ] Step N: Description (stepRef: <UUID>)",
+        "Include output for each step",
+        "Add continuous improvement as final step with approvalRequired: true"
+      ]
+    },
+    {
+      "number": 5,
+      "name": "Create JSON companion file",
+      "description": "Create the agent-facing JSON with complete step definitions",
+      "actions": [
+        "Create file: ~/.claude/zeremai/templates/flows/{category}/{template-name}.json",
+        "Include metadata: type, id (UUID v4 as second field after type), name, category, title, purposeAndUsage",
+        "Include parameters: required and optional arrays",
+        "Include steps array with full context for each step -- stepRef must be the step definition's UUID, with stepRefName as human-readable companion; subFlowTrigger.template must be a template UUID with templateName as companion; loopBackTo uses step name strings; references.steps uses step definition UUIDs; references.relatedTemplates uses template UUIDs",
+        "Include guidance section",
+        "Include memoryFileUsage configuration"
+      ]
+    },
+    {
+      "number": 6,
+      "name": "Validate all sections",
+      "description": "Verify template is complete and valid",
+      "actions": [
+        "Verify all required sections present",
+        "Verify all step references are valid",
+        "Verify flow diagram matches steps",
+        "Document validation results"
+      ]
+    },
+    {
+      "number": 7,
+      "name": "End-Step: Log Problems",
+      "description": "Log what went wrong in this step",
+      "actions": [
+        "Log problems: If any problems, errors, workarounds, or unexpected situations were encountered during this step, log them via add-log-entry --problems '[\"description of problem 1\", ...]'. This feeds the continuous-improvement step's analysis."
+      ]
+    }
+  ],
+  "flow": {
+    "description": "Linear flow: create file → write user docs → write flow → write steps → create JSON → validate"
+  },
+  "memoryFileUsage": {
+    "readFrom": [
+      "context.json",
+      "implementation-decisions.json"
+    ],
+    "writeTo": [
+      "changes-applied.json"
+    ],
+    "fields": [
+      "Information Produced: Template file path, JSON file path, validation results",
+      "Files Modified/Created: Template MD file, JSON companion file"
+    ]
+  }
+}

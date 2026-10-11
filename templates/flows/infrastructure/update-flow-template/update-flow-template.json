@@ -1,0 +1,91 @@
+{
+  "type": "template",
+  "id": "eb1c9c33-6d6a-477f-8178-eadc110184e1",
+  "name": "update-flow-template",
+  "category": "infrastructure",
+  "metadata": {
+    "title": "Update Flow Template",
+    "purposeAndUsage": "Workflow for safely modifying existing flow templates. Use when you need to update a template's steps, parameters, structure, or documentation while ensuring all references remain valid.",
+    "lastUpdated": "2026-02-08"
+  },
+  "parameters": {
+    "required": [
+      "templateName",
+      "updateDescription"
+    ],
+    "optional": [
+      "changeScope",
+      "preserveActiveFlows"
+    ],
+    "definitions": {
+      "templateName": {
+        "description": "Name of the template to update",
+        "type": "string",
+        "example": "code-review"
+      },
+      "updateDescription": {
+        "description": "Description of what changes are needed",
+        "type": "string",
+        "example": "Add approval checkpoint after analysis step"
+      },
+      "changeScope": {
+        "description": "Scope of changes: minor (small fixes) or major (structural changes)",
+        "type": "string",
+        "example": "major"
+      },
+      "preserveActiveFlows": {
+        "description": "Whether to warn if active flows use this template",
+        "type": "boolean",
+        "example": true
+      }
+    }
+  },
+  "steps": [
+    {
+      "number": 0,
+      "name": "Analyze Current Artifact State",
+      "stepRef": "55afac4c-b2de-4fdc-838f-042639175d19",
+      "stepRefName": "analyze-current-artifact-state"
+    },
+    {
+      "number": 1,
+      "name": "Plan Artifact Updates",
+      "stepRef": "df09091e-6069-44be-b9dc-657489a37c64",
+      "approvalRequired": true,
+      "guidance": "When planning changes, check for active flow instances using this template. If found, proactively include a migration plan (inserting new steps, renumbering, preserving existing IDs/statuses). Do not wait for the user to request migration.",
+      "stepRefName": "plan-artifact-updates"
+    },
+    {
+      "number": 2,
+      "name": "Apply Artifact Updates",
+      "stepRef": "03d2c4fa-1d07-4e0a-a16c-48387d805103",
+      "stepRefName": "apply-artifact-updates"
+    },
+    {
+      "number": 3,
+      "name": "Review and Validate Artifact Updates",
+      "stepRef": "6880b8bb-6085-4da5-bd8a-71c5c1e9301e",
+      "approvalRequired": true,
+      "stepRefName": "review-and-validate-artifact-updates"
+    },
+    {
+      "number": 4,
+      "name": "Validate Flow Steps Exist",
+      "stepRef": "369080de-eb84-4c54-874f-59caf9b409b5",
+      "stepRefName": "validate-flow-steps-exist"
+    }
+  ],
+  "references": {
+    "steps": [
+      "55afac4c-b2de-4fdc-838f-042639175d19",
+      "df09091e-6069-44be-b9dc-657489a37c64",
+      "03d2c4fa-1d07-4e0a-a16c-48387d805103",
+      "6880b8bb-6085-4da5-bd8a-71c5c1e9301e",
+      "369080de-eb84-4c54-874f-59caf9b409b5"
+    ],
+    "relatedTemplates": [
+      "dbd4a57f-1a1e-48f2-88bf-28aec980b43a"
+    ],
+    "dependencies": []
+  }
+}

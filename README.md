@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/hero.webp" alt="ZeremAI Marketplace: the flows and templates hub for Claude Code" width="100%"></p>
+
 # ZeremAI-marketplace
 
 Official template library for the [ZeremAI](https://github.com/HMTools/ZeremAI) Claude Code plugin.

@@ -55,7 +55,6 @@
       "Use clear parameter naming with camelCase",
       "Design steps to produce tangible outputs",
       "Ensure flow diagram matches step sequence",
-      "Consider guideline-based steps for team flexibility (see guidelineBasedStepPattern)",
       "Ask the user within steps, not as standalone steps - use the AskUserQuestion tool (see askUserAsSubstepPattern)",
       "Design feedback loops for iterative flows - allow returning to gather more info (see feedbackLoopsPattern)",
       "For templates coordinating multiple phases/skills, use orchestrator pattern (see orchestratorPattern)",
@@ -91,31 +90,10 @@
       "howToImplement": [
         "Read the skill definition to understand its full workflow",
         "Break the skill's workflow into flow steps with clear inputs/outputs",
-        "Embed skill-specific rules and guidelines into step guidance",
+        "Embed skill-specific rules into step guidance",
         "Add approval gates where the skill had user confirmation points"
       ],
       "antiPattern": "Creating a single step that just invokes /skill-name — this bypasses flow tracking"
-    },
-    "guidelineBasedStepPattern": {
-      "description": "Use guideline-based steps when teams need flexibility in how they perform a step",
-      "whenToUse": [
-        "Data collection varies by team (e.g., Jira vs docs vs interviews)",
-        "Teams have different tools or formats (e.g., diagram types, LLD formats)",
-        "Methods differ across organizations (e.g., testing approaches, review flows)",
-        "Step requires domain-specific knowledge that varies"
-      ],
-      "howToImplement": [
-        "Mark the step as guideline-based in the template",
-        "Step JSON references a guideline file that teams customize",
-        "Provide sensible defaults in the step itself",
-        "Teams override via .guidelines/ folder"
-      ],
-      "examples": [
-        "Get parameters from external systems (Jira, Azure DevOps, docs)",
-        "Gather information from various sources",
-        "Create design documents (different formats per team)",
-        "Run tests (different frameworks/approaches)"
-      ]
     },
     "askUserAsSubstepPattern": {
       "description": "Ask the user within steps rather than creating standalone question steps",
@@ -248,8 +226,7 @@
         "Assign steps to each stage (strongly prefer reusing existing steps)",
         "Define expected output for each step",
         "Ensure each step produces tangible work",
-        "Identify which steps need user approval before proceeding (mark with approvalRequired: true)",
-        "For each step, ask: 'Would teams benefit from flexibility here?' If yes, consider guideline-based approach (see guidelineBasedStepPattern)"
+        "Identify which steps need user approval before proceeding (mark with approvalRequired: true)"
       ]
     },
     {

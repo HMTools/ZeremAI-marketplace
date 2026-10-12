@@ -26,7 +26,7 @@
       "Analysis baseline (currentStructure) is available in memory.json from prior step",
       "updateDescription is available in flow parameters"
     ],
-    "guidelineNote": "Use the AskUserQuestion tool if information gaps identified during planning",
+    "askUserNote": "Use the AskUserQuestion tool if information gaps identified during planning",
     "specificActions": [
       "Follow the substeps below in sequence",
       "Workflow: validate params → review requirements → load analysis → prompt compatibility → check consumers → design changes → (ask the user if needed) → create plan → review plan → present for approval",

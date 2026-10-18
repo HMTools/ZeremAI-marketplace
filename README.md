@@ -17,7 +17,7 @@ This repo holds the templates only.
 
 Core infrastructure flows in `templates/flows/infrastructure/`:
 
-`create-flow-template` · `update-flow-template` · `set-concept`
+`create-flow-template` · `update-flow-template`
 
 Domain templates live elsewhere, for example [sdlc-flow-templates](https://github.com/HMTools/sdlc-flow-templates).
 
@@ -33,4 +33,4 @@ Fork, add or change a template under `templates/flows/{category}/{template}/` (s
 
 ## License
 
-See [ZeremAI](https://github.com/HMTools/ZeremAI).
+[MIT](LICENSE). Contributions use the same license, see [CONTRIBUTING](CONTRIBUTING.md).

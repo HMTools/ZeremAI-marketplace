@@ -6,7 +6,8 @@
   "metadata": {
     "title": "Update Flow Template",
     "purposeAndUsage": "Workflow for safely modifying existing flow templates. Use when you need to update a template's steps, parameters, structure, or documentation while ensuring all references remain valid.",
-    "lastUpdated": "2026-02-08"
+    "lastUpdated": "2026-02-08",
+    "version": "1.0.0"
   },
   "parameters": {
     "required": [
